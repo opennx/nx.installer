@@ -115,7 +115,7 @@ BASE_META_SET = [
                                                               2:"Rejected"        # Someone (QC human) checked the file and it was baaaad
                                                               }),
 ("qc", "qc/report",             1, 0, BLOB,        "",       False),              # Holds error report from QC Pass and/or rejection/approval message from QC humanoid
-("qc", "audio/bpm",             0, 0, FLOAT,       0,        False),
+("qc", "audio/bpm",             0, 0, NUMERIC,     0,        False),
 ("qc", "audio/r128/i",          0, 0, NUMERIC,     0,        False),              # Integrated loudness (LUFS)
 ("qc", "audio/r128/t",          0, 0, NUMERIC,     0,        False),              # Integrated loudness threshold (LUFS)
 ("qc", "audio/r128/lra",        0, 0, NUMERIC,     0,        False),              # LRA (LU) 
