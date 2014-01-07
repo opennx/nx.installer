@@ -1,8 +1,8 @@
 {
     "site_name" : "opennx",
-    "db_driver" : "sqlite",
-    "db_host"   : "demo.db",
+    "db_driver" : "postgres",
+    "db_host"   : "192.168.32.32",
     "db_name"   : "opennx",
-    "db_user"   : "opennx",
-    "db_pass"   : "NXpass"
+    "db_user"   : "postgres",
+    "db_pass"   : "Nebul@850"
 }

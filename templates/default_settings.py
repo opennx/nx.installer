@@ -14,18 +14,24 @@ from nx.constants import *
 SITE_SETTINGS = [
     ("seismic_addr" , "224.168.2.8"),
     ("seismic_port" , "42112"),
-    ("cache_driver" , "null"),
-    ("cache_host"   , "192.168.32.32"),
+    ("cache_driver" , "memcached"),
+    ("cache_host"   , "192.168.32.148"),
     ("cache_port"   , "11211")
 ]
 
 ## id_folder, title, color
 FOLDERS = [
-(1, "Music"       , 0xe34931),
-(2, "Movies"      , 0x019875),
-(3, "Jingles"     , 0xeec050),
-(4, "Templates"   , 0x5b5da7),
-(5, "Trailers"    , 0x9c2336),
+(1, "Music video" , 0xe34931),
+(2, "Music"       , 0xe34931),
+(3, "Movies"      , 0x019875),
+(4, "Short films" , 0x019875),
+(5, "Series"      , 0x009706),
+(6, "Jingles"     , 0xeec050),
+(7, "Templates"   , 0x5b5da7),
+(8, "Trailers"    , 0x9c2336),
+(9, "Macros"      , 0xd2c5bb),
+(11,"Incomming"   , 0x20b9eb),
+(12,"News"        , 0x0066cc)
 ]
 
 ## agent, title, host, autostart, loop_delay, settings
@@ -36,23 +42,92 @@ SERVICES = [
 ("watch", "Watch" , HOSTNAME, 1, 10,
 """
 <settings>
+
     <mirror>
-         <id_storage>1</id_storage>
+         <id_storage>2</id_storage>
+         <path>Acquisition/Movies</path>
+         <recursive>1</recursive>
+         <meta tag='origin'>Acquisition</meta>
+         <meta tag='id_folder'>3</meta>
+     </mirror>
+
+    <mirror>
+         <id_storage>2</id_storage>
          <path>Acquisition/Music</path>
          <recursive>1</recursive>
          <filters>
               <filter>audio</filter>
          </filters> 
          <meta tag='origin'>Acquisition</meta>
-         <meta tag='id_folder'>1</meta>
+         <meta tag='id_folder'>2</meta>
      </mirror>
 
     <mirror>
-        <id_storage>1</id_storage>
+         <id_storage>2</id_storage>
+         <path>Acquisition/Youtube</path>
+         <recursive>0</recursive>
+         <filters>
+              <filter>video</filter>
+         </filters> 
+         <meta tag='origin'>Acquisition</meta>
+         <meta tag='id_folder'>11</meta>
+         <post><![CDATA[
+aid = os.path.splitext(os.path.basename(apath))[0]
+if len(aid) == 11:
+    asset["source"] = "Youtube"
+    asset["identifier/youtube"] = asset["title"]
+else:
+    print "no way", aid
+    failed = True
+]]>
+         </post>
+     </mirror>
+
+    <mirror>
+         <id_storage>2</id_storage>
+         <path>Acquisition/Vimeo</path>
+         <recursive>0</recursive>
+         <filters>
+              <filter>video</filter>
+         </filters> 
+         <meta tag='origin'>Acquisition</meta>
+         <meta tag='id_folder'>11</meta>
+         <post><![CDATA[
+aid = os.path.splitext(os.path.basename(apath))[0]
+if aid.isdigit():
+    asset["source"] = "Vimeo"
+    asset["identifier/vimeo"] = aid
+else:
+    print "no way", aid
+    failed = True
+
+]]>
+         </post>
+     </mirror>
+
+
+
+
+    <mirror>
+        <id_storage>2</id_storage>
         <path>Library/Jingles</path>
         <recursive>0</recursive>
         <meta tag='origin'>Library</meta>
-        <meta tag='id_folder'>3</meta>
+        <meta tag='id_folder'>6</meta>
+    </mirror>
+    <mirror>
+        <id_storage>2</id_storage>
+        <path>Library/Templates</path>
+        <recursive>0</recursive>
+        <meta tag='origin'>Library</meta>
+        <meta tag='id_folder'>7</meta>
+    </mirror>
+    <mirror>
+        <id_storage>2</id_storage>
+        <path>Library/Trailers</path>
+        <recursive>0</recursive>
+        <meta tag='origin'>Library</meta>
+        <meta tag='id_folder'>8</meta>
     </mirror>
 </settings>
 """)
@@ -61,6 +136,6 @@ SERVICES = [
 
 ## id_storage, title, protocol, path, login, password
 STORAGES = [
-(1, "Test", LOCAL, "c:\\martas\\nxstor\\", "", ""),
-(2, "Playout", LOCAL, "c:\\martas\\opt\\Caspar\\media", "", "")
+(1, "nxcore", CIFS, "//192.168.32.31/nxcore", "nebula", "Nebul@800"),
+(2, "nxstor", CIFS, "//192.168.32.31/nxstor", "nebula", "Nebul@800")
 ]
