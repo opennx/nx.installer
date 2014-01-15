@@ -12,10 +12,10 @@ STOPPING = 3           # Service graceful stop requested. It should shutdown its
 KILL     = 4           # Service force stop requested. Dispatch is about to kill -9 it
 
 # content_type
-TEXT     = 0           # Text is text... letters, words, sentenses. muhehe 
-VIDEO    = 1           # Moving images. Whooooo
-AUDIO    = 2           # Noise
-IMAGE    = 3           # Static porn
+TEXT     = 0
+VIDEO    = 1
+AUDIO    = 2
+IMAGE    = 3
 
 CONTENT_TYPES = {
     "TEXT"  : TEXT,
@@ -59,6 +59,7 @@ MULTISELECT  = 19      # Stored as json list. config is simialar to select
 PART         = 20      # Part X of Y. Stored as (X,Y) JSON tuple, where X and Y are integers
 BOOLEAN      = 22      # 1/0 checkbox
 STAR         = 21      # Same as boolean, but representated as shiny star in browser.
+FRACTION     = 22      # 16/9 etc...
 
 # storage types
 
