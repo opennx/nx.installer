@@ -19,9 +19,9 @@ BASE_META_SET = [
 ("a",  "status",                 0, 0, STATUS,     0,         False),
 ("a",  "version_of",             0, 0, INTEGER,    0,         False),
 
-("e",  "start",                  0, 0, DATETIME,   0,         False),
-("e",  "stop",                   0, 0, DATETIME,   0,         False),
-("e",  "id_channel",             0, 0, INTEGER,    0,         False),
+("e",  "start",                  1, 0, DATETIME,   0,         False),
+("e",  "stop",                   1, 0, DATETIME,   0,         False),
+("e",  "id_channel",             1, 0, INTEGER,    0,         False),
 ("e",  "id_magic",               0, 0, INTEGER,    0,         False),
 
 ("b",  "bin_type",               0, 0, INTEGER,    0,         False),
@@ -29,10 +29,20 @@ BASE_META_SET = [
 ("i",  "id_asset",               0, 0, INTEGER,    0,         False),
 ("i",  "id_bin",                 0, 0, INTEGER,    0,         False),
 ("i",  "position",               0, 0, INTEGER,    0,         False),
- 
+
+
 #
-# "NX" namespace:
-# 
+# Virtual tags 
+#
+
+
+("v", "genre",                   0, 0, -1,         0,         False),
+("v", "rundown_symbol",          0, 0, -1,         0,         False),
+
+
+#
+# Base metadata
+#
 
 ("A",  "id_storage",             1, 0, INTEGER,     0,        False),
 ("A",  "path",                   1, 1, TEXT,        "",       False),
@@ -64,9 +74,9 @@ BASE_META_SET = [
 ("m",  "source/url",             0, 1, TEXT,        "",       False),
 
 ("m",  "genre",                  1, 1, LIST,        "",       enum("genre")),
-("m",  "genre/music",            1, 1, LIST,        "",       enum("genre/music")), 
+("m",  "genre/music",            1, 1, LIST,        "",       enum("genre/music")),
 
-("m",  "identifier/main",        1, 1, TEXT,        "",       False),              # Primary unique indentifier (IDEC, GUID...)
+("m",  "identifier/main",        1, 1, TEXT,        "",       False),              # Primary Content ID (IDEC, GUID...)
 ("m",  "identifier/youtube",     0, 1, TEXT,        "",       False),              # Youtube ID if exists
 ("m",  "identifier/vimeo",       0, 1, TEXT,        "",       False),              # Vimeo ID if exists
 ("m",  "identifier/imdb",        1, 1, TEXT,        "",       False),
@@ -81,7 +91,7 @@ BASE_META_SET = [
 
 #
 # "FMT" name space:
-# Asset technical metadata. 
+# Asset technical metadata.
 # Should be reset on media file change
 #
 
@@ -89,11 +99,11 @@ BASE_META_SET = [
 ("fmt", "file/size",             0, 0, FILESIZE,    0 ,       False),
 ("fmt", "format",                0, 0, TEXT,        "",       False),              # Container format name. from ffprobe/format/format_name
 ("fmt", "duration",              0, 0, DURATION,    0 ,       False),              # Clip duration. From ffprobe/format/duration. if fails, taken from streams[0]/duration
-("fmt", "video/width",           0, 0, INTEGER,     0 ,       False),    
+("fmt", "video/width",           0, 0, INTEGER,     0 ,       False),
 ("fmt", "video/height",          0, 0, INTEGER,     0 ,       False),
-("fmt", "video/fps",             0, 0, TEXT,        "",       False),
+("fmt", "video/fps",             0, 0, FRACTION,    "",       False),
 ("fmt", "video/pixel_format",    0, 0, TEXT,        "",       False),
-("fmt", "video/aspect_ratio",    0, 0, TEXT,        "",       False),
+("fmt", "video/aspect_ratio",    0, 0, FRACTION,    "",       False),
 ("fmt", "video/codec",           0, 0, TEXT,        "",       False),
 ("fmt", "audio/codec",           0, 0, TEXT,        "",       False),
 
@@ -108,7 +118,7 @@ BASE_META_SET = [
 ("qc", "audio/bpm",              0, 0, NUMERIC,     0,        False),
 ("qc", "audio/r128/i",           0, 0, NUMERIC,     0,        False),              # Integrated loudness (LUFS)
 ("qc", "audio/r128/t",           0, 0, NUMERIC,     0,        False),              # Integrated loudness threshold (LUFS)
-("qc", "audio/r128/lra",         0, 0, NUMERIC,     0,        False),              # LRA (LU) 
+("qc", "audio/r128/lra",         0, 0, NUMERIC,     0,        False),              # LRA (LU)
 ("qc", "audio/r128/lra/t",       0, 0, NUMERIC,     0,        False),              # Loudness range threshold (LUFS)
 ("qc", "audio/r128/lra/l",       0, 0, NUMERIC,     0,        False),              # LRA Low (LUFS)
 ("qc", "audio/r128/lra/r",       0, 0, NUMERIC,     0,        False),              # LRA High (LUFS)
@@ -123,41 +133,42 @@ BASE_META_SET = [
 
 
 META_ALIASES = [
-('id_object'            , 'en-US', '#'),     
-('media_type'           , 'en-US', 'Media type'),       
-('content_type'         , 'en-US', 'Content type'),         
-('id_folder'            , 'en-US', 'Folder'),      
-('ctime'                , 'en-US', 'Created'),  
-('mtime'                , 'en-US', 'Modified'),  
-('origin'               , 'en-US', 'Origin'),   
-('version_of'           , 'en-US', 'Version of'),       
-('status'               , 'en-US', 'Status'),   
-('id_storage'           , 'en-US', 'Storage'),       
-('path'                 , 'en-US', 'Path'), 
-('state'                , 'en-US', 'Approval'),  
-('script/rundown'       , 'en-US', 'Script'),           
-('mark_in'              , 'en-US', 'Mark in'),    
-('mark_out'             , 'en-US', 'Mark out'),     
-('subclips'             , 'en-US', 'Subclips'),     
-('article'              , 'en-US', 'Text'),    
-('title'                , 'en-US', 'Title'),  
-('alternativeTitle'     , 'en-US', 'Alt. Title'),                 
-('identifier/main'      , 'en-US', 'IDEC'),            
-('identifier/youtube'   , 'en-US', 'Youtube ID'),               
-('identifier/vimeo'     , 'en-US', 'Video ID'),             
-('language'             , 'en-US', 'Language'),     
-('date'                 , 'en-US', 'Date'), 
-('genre/music'          , 'en-US', 'Genre'),
-('role/performer'       , 'en-US', 'Artist'),
-('description'          , 'en-US', 'Description'),        
-('coverage'             , 'en-US', 'Coverage'),     
-('rights'               , 'en-US', 'Rights'),   
-('version'              , 'en-US', 'Version'),    
-('album'                , 'en-US', 'Album'),    
-('file/mtime'           , 'en-US', 'File changed'),       
-('file/size'            , 'en-US', 'File size'),      
-('format'               , 'en-US', 'Format'),   
-('duration'             , 'en-US', 'Duration')
+('id_object'            , 'en-US', 'Object ID',         '#'),
+('media_type'           , 'en-US', 'Media type',        None),
+('content_type'         , 'en-US', 'Content type',      ""),
+('id_folder'            , 'en-US', 'Folder',            None),
+('ctime'                , 'en-US', 'Created',           None),
+('mtime'                , 'en-US', 'Modified',          None),
+('origin'               , 'en-US', 'Origin',            None),
+('version_of'           , 'en-US', 'Version of',        None),
+('status'               , 'en-US', 'Status',            None),
+('id_storage'           , 'en-US', 'Storage',           None),
+('path'                 , 'en-US', 'Path',              None),
+('state'                , 'en-US', 'Approval',          None),
+('script/rundown'       , 'en-US', 'Script',            None),
+('mark_in'              , 'en-US', 'Mark in',           None),
+('mark_out'             , 'en-US', 'Mark out',          None),
+('subclips'             , 'en-US', 'Subclips',          None),
+('article'              , 'en-US', 'Text',              None),
+('title'                , 'en-US', 'Title',             None),
+('alternativeTitle'     , 'en-US', 'Alt. Title',        None),
+('identifier/main'      , 'en-US', 'IDEC',              None),
+('identifier/youtube'   , 'en-US', 'Youtube ID',        None),
+('identifier/vimeo'     , 'en-US', 'Video ID',          None),
+('language'             , 'en-US', 'Language',          None),
+('date'                 , 'en-US', 'Date',              None),
+('genre/music'          , 'en-US', 'Genre',             None),
+('role/performer'       , 'en-US', 'Artist',            None),
+('description'          , 'en-US', 'Description',       None),
+('coverage'             , 'en-US', 'Coverage',          None),
+('rights'               , 'en-US', 'Rights',            None),
+('version'              , 'en-US', 'Version',           None),
+('album'                , 'en-US', 'Album',             None),
+('file/mtime'           , 'en-US', 'File changed',      None),
+('file/size'            , 'en-US', 'File size',         None),
+('format'               , 'en-US', 'Format',            None),
+('duration'             , 'en-US', 'Duration',          None),
+('rundown_symbol'       , 'en-US', 'Rundown symbol',    '')
 ]
 
 

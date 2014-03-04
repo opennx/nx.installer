@@ -15,7 +15,7 @@ SITE_SETTINGS = [
     ("seismic_addr" , "224.168.2.8"),
     ("seismic_port" , "42112"),
     ("cache_driver" , "memcached"),
-    ("cache_host"   , "192.168.32.148"),
+    ("cache_host"   , "localhost"),
     ("cache_port"   , "11211")
 ]
 
@@ -77,7 +77,6 @@ if len(aid) == 11:
     asset["source"] = "Youtube"
     asset["identifier/youtube"] = asset["title"]
 else:
-    print "no way", aid
     failed = True
 ]]>
          </post>
@@ -98,7 +97,6 @@ if aid.isdigit():
     asset["source"] = "Vimeo"
     asset["identifier/vimeo"] = aid
 else:
-    print "no way", aid
     failed = True
 
 ]]>
@@ -136,6 +134,6 @@ else:
 
 ## id_storage, title, protocol, path, login, password
 STORAGES = [
-(1, "nxcore", CIFS, "//192.168.32.31/nxcore", "nebula", "Nebul@800"),
-(2, "nxstor", CIFS, "//192.168.32.31/nxstor", "nebula", "Nebul@800")
+(1, "nxcore", CIFS, "//nxcore/nxcore", "nebula", "nebula"),
+(2, "nxstor", CIFS, "//nxcore/nxstor", "nebula", "nebula")
 ]
