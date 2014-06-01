@@ -38,6 +38,9 @@ BASE_META_SET = [
 
 ("v", "genre",                   0, 0, -1,         0,         False),
 ("v", "rundown_symbol",          0, 0, -1,         0,         False),
+("v", "rundown_status",          0, 0, -1,         0,         False),
+("v", "rundown_broadcast",       0, 0, -1,         0,         False),
+("v", "rundown_scheduled",       0, 0, -1,         0,         False),
 
 
 #
@@ -54,9 +57,9 @@ BASE_META_SET = [
 ("AI", "mark_out",               1, 0, TIMECODE,    0,        False),
 
 ("AIEB",  "title",               1, 1, TEXT,        "",       False),
-("AIEB",  "alternativeTitle",    1, 1, TEXT,        "",       False),
+("AIEB",  "alternative_title",   1, 1, TEXT,        "",       False),
 ("AIEB",  "description",         1, 1, BLOB,        "",       {"syntax":"off"}),
-("AIEB",  "promoted",            1, 0, STAR,        0,        False),              # Asset "promotion". It's hit, important, favourite,....
+("AIEB",  "promoted",            1, 0, STAR,        0,        False),              # Asset "promotion". It"s hit, important, favourite,....
 
 
 #
@@ -73,7 +76,7 @@ BASE_META_SET = [
 ("m",  "source",                 0, 1, TEXT,        "",       False),
 ("m",  "source/url",             0, 1, TEXT,        "",       False),
 
-("m",  "genre",                  1, 1, LIST,        "",       enum("genre")),
+("m",  "genre/movie",            1, 1, LIST,        "",       enum("genre/movie")),
 ("m",  "genre/music",            1, 1, LIST,        "",       enum("genre/music")),
 
 ("m",  "identifier/main",        1, 1, TEXT,        "",       False),              # Primary Content ID (IDEC, GUID...)
@@ -85,10 +88,16 @@ BASE_META_SET = [
 ("m",  "role/composer",          1, 1, TEXT,        "",       False),              # ebu_RoleCode 17.1.7 (music)
 ("m",  "role/performer",         1, 1, TEXT,        "",       False),              # ebu_RoleCode 17.2   (music)
 
+#
+# Following keys are not supported by EBUCore
+#
+
 ("m",  "album",                  1, 1, TEXT,        "",       False),
 ("m",  "album/track",            1, 0, INTEGER,     0,        False),
 ("m",  "album/disc",             1, 0, INTEGER,     0,        False),
 
+("m",  "contains/cg_text",       1, 0, BOOLEAN,     0,        False),
+("m",  "contains/nudity",        1, 0, BOOLEAN,     0,        False),
 #
 # "FMT" name space:
 # Asset technical metadata.
@@ -115,7 +124,7 @@ BASE_META_SET = [
 
 ("qc", "qc/state",               1, 0, STATE,       0,        {0:"New", 1:"QC Passed", 2:"Approved", 3:"Rejected"}),
 ("qc", "qc/report",              1, 0, BLOB,        "",       False),              # Holds error report from QC Pass and/or rejection/approval message from QC humanoid
-("qc", "audio/bpm",              0, 0, NUMERIC,     0,        False),
+("qc", "audio/bpm",              0, 0, NUMERIC,     0,        False),              # Music BPM
 ("qc", "audio/r128/i",           0, 0, NUMERIC,     0,        False),              # Integrated loudness (LUFS)
 ("qc", "audio/r128/t",           0, 0, NUMERIC,     0,        False),              # Integrated loudness threshold (LUFS)
 ("qc", "audio/r128/lra",         0, 0, NUMERIC,     0,        False),              # LRA (LU)
@@ -133,42 +142,46 @@ BASE_META_SET = [
 
 
 META_ALIASES = [
-('id_object'            , 'en-US', 'Object ID',         '#'),
-('media_type'           , 'en-US', 'Media type',        None),
-('content_type'         , 'en-US', 'Content type',      ""),
-('id_folder'            , 'en-US', 'Folder',            None),
-('ctime'                , 'en-US', 'Created',           None),
-('mtime'                , 'en-US', 'Modified',          None),
-('origin'               , 'en-US', 'Origin',            None),
-('version_of'           , 'en-US', 'Version of',        None),
-('status'               , 'en-US', 'Status',            None),
-('id_storage'           , 'en-US', 'Storage',           None),
-('path'                 , 'en-US', 'Path',              None),
-('state'                , 'en-US', 'Approval',          None),
-('script/rundown'       , 'en-US', 'Script',            None),
-('mark_in'              , 'en-US', 'Mark in',           None),
-('mark_out'             , 'en-US', 'Mark out',          None),
-('subclips'             , 'en-US', 'Subclips',          None),
-('article'              , 'en-US', 'Text',              None),
-('title'                , 'en-US', 'Title',             None),
-('alternativeTitle'     , 'en-US', 'Alt. Title',        None),
-('identifier/main'      , 'en-US', 'IDEC',              None),
-('identifier/youtube'   , 'en-US', 'Youtube ID',        None),
-('identifier/vimeo'     , 'en-US', 'Video ID',          None),
-('language'             , 'en-US', 'Language',          None),
-('date'                 , 'en-US', 'Date',              None),
-('genre/music'          , 'en-US', 'Genre',             None),
-('role/performer'       , 'en-US', 'Artist',            None),
-('description'          , 'en-US', 'Description',       None),
-('coverage'             , 'en-US', 'Coverage',          None),
-('rights'               , 'en-US', 'Rights',            None),
-('version'              , 'en-US', 'Version',           None),
-('album'                , 'en-US', 'Album',             None),
-('file/mtime'           , 'en-US', 'File changed',      None),
-('file/size'            , 'en-US', 'File size',         None),
-('format'               , 'en-US', 'Format',            None),
-('duration'             , 'en-US', 'Duration',          None),
-('rundown_symbol'       , 'en-US', 'Rundown symbol',    '')
+("id_object"            , "en-US", "Object ID",         "#"),
+("media_type"           , "en-US", "Media type",        None),
+("content_type"         , "en-US", "Content type",      ""),
+("id_folder"            , "en-US", "Folder",            None),
+("ctime"                , "en-US", "Created",           None),
+("mtime"                , "en-US", "Modified",          None),
+("origin"               , "en-US", "Origin",            None),
+("version_of"           , "en-US", "Version of",        None),
+("status"               , "en-US", "Status",            None),
+("id_storage"           , "en-US", "Storage",           None),
+("path"                 , "en-US", "Path",              None),
+("state"                , "en-US", "Approval",          None),
+("script/rundown"       , "en-US", "Script",            None),
+("mark_in"              , "en-US", "Mark in",           None),
+("mark_out"             , "en-US", "Mark out",          None),
+("subclips"             , "en-US", "Subclips",          None),
+("article"              , "en-US", "Text",              None),
+("title"                , "en-US", "Title",             None),
+("alternativeTitle"     , "en-US", "Alt. Title",        None),
+("identifier/main"      , "en-US", "IDEC",              None),
+("identifier/youtube"   , "en-US", "Youtube ID",        None),
+("identifier/vimeo"     , "en-US", "Vimeo ID",          None),
+("language"             , "en-US", "Language",          None),
+("date"                 , "en-US", "Date",              None),
+("genre/music"          , "en-US", "Genre",             None),
+("role/performer"       , "en-US", "Artist",            None),
+("description"          , "en-US", "Description",       None),
+("coverage"             , "en-US", "Coverage",          None),
+("rights"               , "en-US", "Rights",            None),
+("version"              , "en-US", "Version",           None),
+("album"                , "en-US", "Album",             None),
+("file/mtime"           , "en-US", "File changed",      None),
+("file/size"            , "en-US", "File size",         None),
+("format"               , "en-US", "Format",            None),
+("duration"             , "en-US", "Duration",          None),
+("promoted"             , "en-US", "promoted",          ""),
+("rundown_symbol"       , "en-US", "Rundown symbol",    ""),
+("rundown_status"       , "en-US", "Status",            ""),
+("rundown_broadcast"    , "en-US", "Broadcast time",    "Broadcast"),
+("rundown_scheduled"    , "en-US", "Scheduled time",    "Scheduled")
 ]
 
 

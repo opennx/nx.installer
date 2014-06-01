@@ -41,8 +41,8 @@ db = DB()
 ## metadata set
 
 print "Truncating old tables"
-db.query("TRUNCATE TABLE nx_assets, nx_items, nx_bins, nx_events RESTART IDENTITY")
-db.query("TRUNCATE TABLE nx_meta_types, nx_meta_aliases, nx_settings, nx_folders, nx_services, nx_storages RESTART IDENTITY")
+db.query("TRUNCATE TABLE nx_assets, nx_meta, nx_items, nx_bins, nx_events RESTART IDENTITY")
+db.query("TRUNCATE TABLE nx_meta_types, nx_meta_aliases RESTART IDENTITY")
 db.commit()
 
 
@@ -54,11 +54,18 @@ for ns, tag, editable, searchable, class_, default, settings in BASE_META_SET:
 db.commit()
 
 print "Installing meta aliases"
-for tag, lang, alias in META_ALIASES:
-    q = """INSERT INTO nx_meta_aliases (tag, lang, alias) VALUES ('%s' ,'%s', '%s')""" % (tag, lang, alias)
+for tag, lang, alias, col_header in META_ALIASES:
+    q = """INSERT INTO nx_meta_aliases (tag, lang, alias, col_header) VALUES ('%s' ,'%s', '%s', '%s')""" % (tag, lang, alias, col_header)
     db.query(q)
 db.commit()
 
+
+
+
+
+sys.exit(0)
+
+db.query("TRUNCATE TABLE nx_meta_types, nx_meta_aliases, nx_settings, nx_folders, nx_services, nx_storages RESTART IDENTITY")
 
 print "Installing site settings"
 for key, value in SITE_SETTINGS:
