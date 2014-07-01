@@ -56,8 +56,11 @@ BASE_META_SET = [
 ("AI", "mark_in",                1, 0, TIMECODE,    0,        False),
 ("AI", "mark_out",               1, 0, TIMECODE,    0,        False),
 
-("AIEB",  "title",               1, 1, TEXT,        "",       False),
-("AIEB",  "alternative_title",   1, 1, TEXT,        "",       False),
+("AIEB",  "title",               1, 1, TEXT,        "",       False),    # dc.title.main - The title most commonly associated with the resource. Where no TYPE is specified, main is assumed. A main title is required for every resource.
+("AIEB",  "title/subtitle",      1, 1, TEXT,        "",       False),    # dc.title.subtitle - Ancillary title information for the resource. A main title is required before subtitle(s) may be used.
+("AIEB",  "title/alternate",     1, 1, TEXT,        "",       False),    # dc.title.alternate - Where a resource is known by more than one name, or where it has a formal name and a vernacular name, the alternate or vernacular name may be recorded here. A main title recording the full and formal name is required before an alternate title may be given.
+("AIEB",  "title/series",        1, 1, TEXT,        "",       False),    # dc.title.series - Where the resource is part of a series (CBA Research Reports, Star Trek, or whatever), the series name may be given here."
+("AIEB",  "title/original",      1, 1, TEXT,        "",       False),    # ebucore.title.original
 ("AIEB",  "description",         1, 1, BLOB,        "",       {"syntax":"off"}),
 ("AIEB",  "promoted",            1, 0, STAR,        0,        False),              # Asset "promotion". It"s hit, important, favourite,....
 
