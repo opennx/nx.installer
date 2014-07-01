@@ -19,22 +19,12 @@ from templates.default_settings import *
 ##############################################################  
 ## create db structure
 
-#if os.path.exists(".cache"):
-#    try:    os.remove(".cache")
-#    except: pass
-
-#if os.path.exists(config["db_host"]):
-#    try:    os.remove(config["db_host"])
-#    except: critical_error("Unable to remove old DB File")
 
 db = DB()
-#for q in SQLITE_TPL:
+#for q in DB_TEMPLATE:
 #    db.query(q)
-#b.commit()
-
-#if config['db_driver'] == "postgres":
-#    try: db.query("create extension unaccent;")
-#    except: pass
+###db.commit()
+#sys.exit(0)
 
 ## create db structure
 ##############################################################
@@ -59,11 +49,6 @@ for tag, lang, alias, col_header in META_ALIASES:
     db.query(q)
 db.commit()
 
-
-
-
-
-sys.exit(0)
 
 db.query("TRUNCATE TABLE nx_meta_types, nx_meta_aliases, nx_settings, nx_folders, nx_services, nx_storages RESTART IDENTITY")
 
