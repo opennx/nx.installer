@@ -68,6 +68,7 @@ DB_TEMPLATE = [
     "id_folder" serial NOT NULL, 
     "title" varchar(50) NOT NULL, 
     "color" integer NOT NULL, 
+    "meta_set" text NOT NULL DEFAULT '[]',
     CONSTRAINT "nx_folders_pkey" PRIMARY KEY ("id_folder")
 )""",
 

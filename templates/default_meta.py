@@ -125,7 +125,7 @@ BASE_META_SET = [
 # Should be reset on media file change
 #
 
-("qc", "qc/state",               1, 0, STATE,       0,        {0:"New", 1:"QC Passed", 2:"Approved", 3:"Rejected"}),
+("qc", "qc/state",               1, 0, STATE,       0,        {0:"New", 1:"AQC Rejected", 2:"AQC Passed", 3:"QC Rejected", 4:"QC Passed (Inactive)", 5:"QC Passed (Active)"}),
 ("qc", "qc/report",              1, 0, BLOB,        "",       False),              # Holds error report from QC Pass and/or rejection/approval message from QC humanoid
 ("qc", "audio/bpm",              0, 0, NUMERIC,     0,        False),              # Music BPM
 ("qc", "audio/r128/i",           0, 0, NUMERIC,     0,        False),              # Integrated loudness (LUFS)
