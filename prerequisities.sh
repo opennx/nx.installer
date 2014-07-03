@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 apt-get -y install python-psycopg2 python-pylibmc python-cairo python pip
 pip install flask flask-login
