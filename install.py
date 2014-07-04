@@ -4,17 +4,21 @@
 from nx import *
 from optparse import OptionParser
 
-
 NX_ROOT = os.path.split(sys.argv[0])[0]
 if not NX_ROOT in sys.path:
     sys.path.append(NX_ROOT)
 
-from template.actions import *
-from template.folders import *
-from template.metadata import *
-from template.services import *
-from template.site_settings import *
-from template.storages import *
+from db_structure import DB_STRUCTURE
+
+from default.actions import ACTIONS
+from default.channels import CHANNELS
+from default.folders import FOLDERS
+from default.metadata import BASE_META_SET
+from default.metadata import META_ALIASES
+from default.services import SERVICES
+from default.site_settings import SITE_SETTINGS
+from default.storages import STORAGES
+
 
 
 usage = "usage: %prog [options]"
@@ -32,16 +36,56 @@ parser.add_option("-o", "--objects", dest="objects",
 
 (options, args) = parser.parse_args()
 
+template = "nxtv"
+
+if template and os.path.exists("template_{}".format(template)):
+    try:
+        ACTIONS = __import__('template_{}.actions'.format(template), globals(), locals(), ['ACTIONS'], -1).ACTIONS
+    except ImportError:
+        pass
+    try:
+        CHANNELS = __import__('template_{}.channels'.format(template), globals(), locals(), ['CHANNELS'], -1).CHANNELS
+    except ImportError:
+        pass
+    try:
+        FOLDERS = __import__('template_{}.folders'.format(template), globals(), locals(), ['FOLDERS'], -1).FOLDERS
+    except ImportError:
+        pass
+    try:
+        BASE_META_SET = __import__('template_{}.metadata'.format(template), globals(), locals(), ['BASE_META_SET'], -1).BASE_META_SET
+    except ImportError:
+        pass
+    try:
+        META_ALIASES = __import__('template_{}.metadata'.format(template), globals(), locals(), ['META_ALIASES'], -1).META_ALIASES
+    except ImportError:
+        pass
+    try:
+        SERVICES = __import__('template_{}.services'.format(template), globals(), locals(), ['SERVICES'], -1).SERVICES
+    except ImportError:
+        pass
+    try:
+        SITE_SETTINGS = __import__('template_{}.site_settings'.format(template), globals(), locals(), ['SITE_SETTINGS'], -1).SITE_SETTINGS
+    except ImportError:
+        pass
+    try:
+        STORAGES = __import__('template_{}.storages'.format(template), globals(), locals(), ['STORAGES'], -1).STORAGES
+    except ImportError:
+        pass
+    try:
+        VIEWS = __import__('template_{}.views'.format(template), globals(), locals(), ['VIEWS'], -1).VIEWS
+    except ImportError:
+        pass
+
+
 
 db = DB()
-
 
 ##############################################################  
 ## create db structure
 
 if options.structure:
     print ("Recreating database structure")
-    for q in DB_TEMPLATE:
+    for q in DB_STRUCTURE:
         db.query(q)
     db.commit()
     
@@ -66,13 +110,13 @@ for ns, tag, editable, searchable, class_, default, settings in BASE_META_SET:
 db.commit()
 
 for tag, lang, alias, col_header in META_ALIASES:
-    q = """INSERT INTO nx_meta_aliases (tag, lang, alias, col_header) VALUES ('%s' ,'%s', '%s', '%s')""" % (tag, lang, alias, col_header)
-    db.query(q)
+    db.query("""INSERT INTO nx_meta_aliases (tag, lang, alias, col_header) VALUES (%s ,%s, %s, %s)""", [tag, lang, alias, col_header])
 db.commit()
 
 
 
-db.query("TRUNCATE TABLE nx_settings, nx_folders, nx_services, nx_storages RESTART IDENTITY")
+db.query("TRUNCATE TABLE nx_settings, nx_folders, nx_services, nx_storages, nx_actions, nx_channels, nx_views RESTART IDENTITY")
+db.commit()
 
 print "Installing site settings"
 for key, value in SITE_SETTINGS:
@@ -99,3 +143,21 @@ for id_storage, title, protocol, path, login, password in STORAGES:
         (id_storage, db.sanit(title), protocol, db.sanit(path), db.sanit(login), db.sanit(password))
     db.query(q)
 db.commit() 
+
+print "Installing actions"
+for id_action, title, config in ACTIONS:
+  q = "INSERT INTO nx_actions (id_action, title, config) VALUES (%d,'%s', '%s')" % (id_action, title, db.sanit(config))
+  db.query(q)
+db.commit()
+
+print "Installing channels"
+for id_channel, channel_type, title, config in CHANNELS:
+  q = "INSERT INTO nx_channels (id_channel, channel_type, title, config) VALUES (%d, %d, '%s', '%s')" % (id_channel, channel_type, title, db.sanit(json.dumps(config)))
+  db.query(q)
+db.commit()
+
+print "Installing views"
+for title, config in VIEWS:
+  q = "INSERT INTO nx_views (owner, title, config) VALUES (0, '%s', '%s')" % (title, db.sanit(config))
+  db.query(q)
+db.commit()

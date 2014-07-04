@@ -1,35 +1,25 @@
-DB_TEMPLATE = [
+DB_STRUCTURE = [
 
 """DROP schema public cascade;""",
 """CREATE schema public;""",
 """CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;""",
 
 
-"""CREATE TABLE "public"."nx_settings" ( 
+"""CREATE TABLE "public"."nx_cs" ( 
+    "cs" varchar(50) NOT NULL, 
+    "value" varchar(255) NOT NULL, 
+    "label" varchar(255) NOT NULL, 
+    CONSTRAINT "nx_cs_pkey" PRIMARY KEY ("cs", "value")
+);""",
+
+
+"""CREATE TABLE "public"."nx_settings" (
     "key" varchar(50) NOT NULL, 
     "value" text NOT NULL, 
     CONSTRAINT "nx_settings_pkey" PRIMARY KEY ("key")
 );""",
 
 
-"""CREATE TABLE "public"."nx_items" ( 
-    "id_object" serial NOT NULL, 
-    "id_asset" integer NOT NULL, 
-    "id_bin" integer NOT NULL, 
-    "position" integer NOT NULL, 
-    "ctime" integer NOT NULL, 
-    "mtime" integer NOT NULL, 
-    CONSTRAINT "PK_nx_items" PRIMARY KEY ("id_object")
-)""",
-
-
-"""CREATE TABLE "public"."nx_bins" ( 
-    "id_object" serial NOT NULL, 
-    "bin_type" integer NOT NULL, 
-    "ctime" integer NOT NULL, 
-    "mtime" integer NOT NULL, 
-    CONSTRAINT "PK_nx_bins" PRIMARY KEY ("id_object")
-)""",
 
 
 """CREATE TABLE "public"."nx_assets" ( 
@@ -45,15 +35,24 @@ DB_TEMPLATE = [
     CONSTRAINT "nx_assets_pkey" PRIMARY KEY ("id_object")
 )""",
 
-
-"""CREATE TABLE "public"."nx_meta" ( 
-    "id_object" integer NOT NULL, 
-    "object_type" integer NOT NULL, 
-    "tag" varchar(50) NOT NULL, 
-    "value" text NOT NULL, 
-    CONSTRAINT "PK_nx_meta" PRIMARY KEY ("tag", "id_object", "object_type")
+"""CREATE TABLE "public"."nx_items" ( 
+    "id_object" serial NOT NULL, 
+    "id_asset" integer NOT NULL, 
+    "id_bin" integer NOT NULL, 
+    "position" integer NOT NULL, 
+    "ctime" integer NOT NULL, 
+    "mtime" integer NOT NULL, 
+    CONSTRAINT "nx_items_pkey" PRIMARY KEY ("id_object")
 )""",
 
+
+"""CREATE TABLE "public"."nx_bins" ( 
+    "id_object" serial NOT NULL, 
+    "bin_type" integer NOT NULL, 
+    "ctime" integer NOT NULL, 
+    "mtime" integer NOT NULL, 
+    CONSTRAINT "nx_bins_pkey" PRIMARY KEY ("id_object")
+)""",
 
 """CREATE TABLE "public"."nx_events" ( 
     "id_object" serial NOT NULL, 
@@ -63,8 +62,58 @@ DB_TEMPLATE = [
     "id_magic" integer NOT NULL, 
     "ctime" integer NOT NULL, 
     "mtime" integer NOT NULL, 
-    CONSTRAINT "PK_nx_events" PRIMARY KEY ("id_object")
+    CONSTRAINT "nx_events_pkey" PRIMARY KEY ("id_object")
 )""",
+
+
+"""CREATE TABLE "public"."nx_users" ( 
+    "id_object" serial NOT NULL, 
+    "login" varchar(255) NOT NULL, 
+    "password" varchar(255) NOT NULL, 
+    "ctime" integer NOT NULL, 
+    "mtime" integer NOT NULL, 
+    CONSTRAINT "nx_users_pkey" PRIMARY KEY ("id_object")
+)""",
+
+
+"""CREATE TABLE "public"."nx_sessions" ( 
+    "key" varchar(255) NOT NULL, 
+    "id_user" integer NOT NULL, 
+    "host" varchar(50) NOT NULL, 
+    "ctime" integer NOT NULL, 
+    "mtime" integer NOT NULL, 
+    CONSTRAINT "nx_sessions_pkey" PRIMARY KEY ("key")
+)""",
+
+
+
+"""CREATE TABLE "public"."nx_meta" ( 
+    "id_object" integer NOT NULL, 
+    "object_type" integer NOT NULL, 
+    "tag" varchar(50) NOT NULL, 
+    "value" text NOT NULL, 
+    CONSTRAINT "nx_meta_pkey" PRIMARY KEY ("tag", "id_object", "object_type")
+)""",
+
+"""CREATE TABLE "public"."nx_meta_types" ( 
+    "namespace" varchar(10) NOT NULL, 
+    "tag" varchar(50) NOT NULL, 
+    "editable" integer NOT NULL, 
+    "searchable" integer NOT NULL, 
+    "class" integer NOT NULL, 
+    "default_value" text NOT NULL, 
+    "settings" text NOT NULL, 
+    CONSTRAINT "nx_meta_types_pkey" PRIMARY KEY ("tag")
+)""",
+
+"""CREATE TABLE "public"."nx_meta_aliases" ( 
+    "tag" varchar(50) NOT NULL, 
+    "lang" varchar(50) NOT NULL, 
+    "alias" varchar(50) NOT NULL, 
+    "col_header" varchar(50) NULL, 
+    CONSTRAINT "nx_meta_aliases_pkey" PRIMARY KEY ("tag", "lang")
+)""",
+
 
 
 """CREATE TABLE "public"."nx_folders" ( 
@@ -74,7 +123,6 @@ DB_TEMPLATE = [
     "meta_set" text NOT NULL DEFAULT '[]',
     CONSTRAINT "nx_folders_pkey" PRIMARY KEY ("id_folder")
 )""",
-
 
 """CREATE TABLE "public"."nx_services" ( 
     "id_service" serial NOT NULL, 
@@ -107,7 +155,7 @@ DB_TEMPLATE = [
     "channel_type" integer NOT NULL, 
     "title" varchar(50) NOT NULL, 
     "config" text NOT NULL, 
-    CONSTRAINT "PK_nx_channels" PRIMARY KEY ("id_channel")
+    CONSTRAINT "nx_channels_pkey" PRIMARY KEY ("id_channel")
 )""",
 
 
@@ -115,9 +163,18 @@ DB_TEMPLATE = [
     "id_action" serial NOT NULL, 
     "title" varchar(50) NOT NULL, 
     "config" text NOT NULL, 
-    CONSTRAINT "PK_nx_actions" PRIMARY KEY ("id_action")
+    CONSTRAINT "nx_actions_pkey" PRIMARY KEY ("id_action")
 )""",
 
+
+"""CREATE TABLE "public"."nx_views" ( 
+    "id_view" serial NOT NULL, 
+    "title" varchar(50) NOT NULL, 
+    "owner" integer NOT NULL DEFAULT 0, 
+    "config" text NOT NULL, 
+    "position" integer NOT NULL DEFAULT 0, 
+    CONSTRAINT "nx_views_pkey" PRIMARY KEY ("id_view")
+)""",
 
 """CREATE TABLE "public"."nx_jobs" ( 
     "id_job" serial NOT NULL, 
@@ -133,40 +190,7 @@ DB_TEMPLATE = [
     "etime" integer NOT NULL, 
     "message" text NOT NULL, 
     "id_user" integer NOT NULL, 
-    CONSTRAINT "PK_nx_jobs" PRIMARY KEY ("id_job")
-)""",
-
-
-"""CREATE TABLE "public"."nx_meta_types" ( 
-    "namespace" varchar(10) NOT NULL, 
-    "tag" varchar(50) NOT NULL, 
-    "editable" integer NOT NULL, 
-    "searchable" integer NOT NULL, 
-    "class" integer NOT NULL, 
-    "default_value" text NOT NULL, 
-    "settings" text NOT NULL, 
-    CONSTRAINT "nx_meta_types_pkey" PRIMARY KEY ("tag")
-)""",
-
-
-"""CREATE TABLE "public"."nx_meta_aliases" ( 
-    "tag" varchar(50) NOT NULL, 
-    "lang" varchar(50) NOT NULL, 
-    "alias" varchar(50) NOT NULL, 
-    "col_header" varchar(50) NULL, 
-    CONSTRAINT "nx_meta_aliases_pkey" PRIMARY KEY ("tag", "lang")
-)""",
-
-
-"""CREATE TABLE "public"."nx_views" ( 
-    "id_view" serial NOT NULL, 
-    "title" varchar(50) NOT NULL, 
-    "owner" integer NOT NULL DEFAULT 0, 
-    "config" text NOT NULL, 
-    "position" integer NOT NULL DEFAULT 0, 
-    CONSTRAINT "PK_nx_views" PRIMARY KEY ("id_view")
+    CONSTRAINT "nx_jobs_pkey" PRIMARY KEY ("id_job")
 )"""
 
 ]
-
-
