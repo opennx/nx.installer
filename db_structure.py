@@ -1,6 +1,9 @@
 DB_TEMPLATE = [
 
+"""DROP schema public cascade;""",
+"""CREATE schema public;""",
 """CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;""",
+
 
 """CREATE TABLE "public"."nx_settings" ( 
     "key" varchar(50) NOT NULL, 
