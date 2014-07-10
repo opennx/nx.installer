@@ -39,42 +39,43 @@ parser.add_option("-o", "--objects", dest="objects",
 template = config["site_name"]
 
 if template and os.path.exists("template_{}".format(template)):
+    print "Using template", template
     try:
         ACTIONS = __import__('template_{}.actions'.format(template), globals(), locals(), ['ACTIONS'], -1).ACTIONS
     except ImportError:
-        pass
+        print ("Using default settings for actions")
     try:
         CHANNELS = __import__('template_{}.channels'.format(template), globals(), locals(), ['CHANNELS'], -1).CHANNELS
     except ImportError:
-        pass
+        print ("Using default settings for channels")
     try:
         FOLDERS = __import__('template_{}.folders'.format(template), globals(), locals(), ['FOLDERS'], -1).FOLDERS
     except ImportError:
-        pass
+        print ("Using default settings for folders")
     try:
         BASE_META_SET = __import__('template_{}.metadata'.format(template), globals(), locals(), ['BASE_META_SET'], -1).BASE_META_SET
     except ImportError:
-        pass
+        print ("Using default settings for metadata")
     try:
         META_ALIASES = __import__('template_{}.metadata'.format(template), globals(), locals(), ['META_ALIASES'], -1).META_ALIASES
     except ImportError:
-        pass
+        print ("Using default settings for metadata")
     try:
         SERVICES = __import__('template_{}.services'.format(template), globals(), locals(), ['SERVICES'], -1).SERVICES
     except ImportError:
-        pass
+        print ("Using default settings for services")
     try:
         SITE_SETTINGS = __import__('template_{}.site_settings'.format(template), globals(), locals(), ['SITE_SETTINGS'], -1).SITE_SETTINGS
     except ImportError:
-        pass
+        print ("Using default settings for site_settings")
     try:
         STORAGES = __import__('template_{}.storages'.format(template), globals(), locals(), ['STORAGES'], -1).STORAGES
     except ImportError:
-        pass
+        print ("Using default settings for storages")
     try:
         VIEWS = __import__('template_{}.views'.format(template), globals(), locals(), ['VIEWS'], -1).VIEWS
     except ImportError:
-        pass
+        print ("Using default settings for views")
 
 
 
@@ -96,7 +97,7 @@ if options.structure:
 if not options.structure:
     if options.objects:
         print ("Removing objects")
-        db.query("TRUNCATE TABLE nx_assets, nx_meta, nx_items, nx_bins, nx_events RESTART IDENTITY")
+        db.query("TRUNCATE TABLE nx_assets, nx_meta, nx_items, nx_bins, nx_events, nx_jobs RESTART IDENTITY")
         db.commit()
 
 
@@ -126,8 +127,8 @@ db.commit()
 
 print "Installing folders"
 for id_folder, title, color, meta_set in FOLDERS:
-  q = "INSERT INTO nx_folders (id_folder, title, color, meta_set) VALUES (%d,'%s',%d, '%s')" % (id_folder, title, color, json.dumps(meta_set))
-  db.query(q)
+    q = "INSERT INTO nx_folders (id_folder, title, color, meta_set) VALUES (%d,'%s',%d, '%s')" % (id_folder, title, color, json.dumps(meta_set))
+    db.query(q)
 db.commit()
 
 print "Installing services"
@@ -146,18 +147,18 @@ db.commit()
 
 print "Installing actions"
 for id_action, title, config in ACTIONS:
-  q = "INSERT INTO nx_actions (id_action, title, config) VALUES (%d,'%s', '%s')" % (id_action, title, db.sanit(config))
-  db.query(q)
+    q = "INSERT INTO nx_actions (id_action, title, config) VALUES (%d,'%s', '%s')" % (id_action, title, db.sanit(config))
+    db.query(q)
 db.commit()
 
 print "Installing channels"
 for id_channel, channel_type, title, config in CHANNELS:
-  q = "INSERT INTO nx_channels (id_channel, channel_type, title, config) VALUES (%d, %d, '%s', '%s')" % (id_channel, channel_type, title, db.sanit(json.dumps(config)))
-  db.query(q)
+    q = "INSERT INTO nx_channels (id_channel, channel_type, title, config) VALUES (%d, %d, '%s', '%s')" % (id_channel, channel_type, title, db.sanit(json.dumps(config)))
+    db.query(q)
 db.commit()
 
 print "Installing views"
 for title, config in VIEWS:
-  q = "INSERT INTO nx_views (owner, title, config) VALUES (0, '%s', '%s')" % (title, db.sanit(config))
-  db.query(q)
+    q = "INSERT INTO nx_views (owner, title, config) VALUES (0, '%s', '%s')" % (title, db.sanit(config))
+    db.query(q)
 db.commit()
