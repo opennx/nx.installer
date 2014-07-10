@@ -18,7 +18,7 @@ from default.metadata import META_ALIASES
 from default.services import SERVICES
 from default.site_settings import SITE_SETTINGS
 from default.storages import STORAGES
-
+from default.views import VIEWS
 
 
 usage = "usage: %prog [options]"
@@ -36,7 +36,7 @@ parser.add_option("-o", "--objects", dest="objects",
 
 (options, args) = parser.parse_args()
 
-template = "nxtv"
+template = config["site_name"]
 
 if template and os.path.exists("template_{}".format(template)):
     try:
