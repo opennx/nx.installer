@@ -20,8 +20,6 @@ DB_STRUCTURE = [
 );""",
 
 
-
-
 """CREATE TABLE "public"."nx_assets" ( 
     "id_object" serial NOT NULL, 
     "media_type" integer NOT NULL, 
@@ -191,6 +189,18 @@ DB_STRUCTURE = [
     "message" text NOT NULL, 
     "id_user" integer NOT NULL, 
     CONSTRAINT "nx_jobs_pkey" PRIMARY KEY ("id_job")
-)"""
+)""",
+
+
+"""CREATE TABLE "public"."nx_asrun" ( 
+    "id_run" serial NOT NULL, 
+    "id_channel" integer NOT NULL, 
+    "start" integer NOT NULL, 
+    "stop" integer NOT NULL, 
+    "title" varchar(255) NOT NULL, 
+    "id_item" integer NOT NULL, 
+    "id_asset" integer NOT NULL, 
+    CONSTRAINT "nx_asrun_pkey" PRIMARY KEY ("id_run")
+)""",
 
 ]

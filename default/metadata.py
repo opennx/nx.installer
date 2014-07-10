@@ -11,10 +11,10 @@ BASE_META_SET = [
 ("o",  "ctime",                  0, 0, DATETIME,   0,         False),
 ("o",  "mtime",                  0, 0, DATETIME,   0,         False),
 
-("a",  "media_type",             0, 0, INTEGER,    0,         False), # FILE / VIRTUAL
-("a",  "content_type",           0, 0, INTEGER,    0,         False), # VIDEO / AUDIO /  IMAGE / TEXT 
+("a",  "media_type",             0, 0, INTEGER,    0,         False),    # FILE / VIRTUAL
+("a",  "content_type",           0, 0, INTEGER,    0,         False),    # VIDEO / AUDIO /  IMAGE / TEXT 
 ("a",  "id_folder",              1, 0, INTEGER,    0,         False), 
-("a",  "origin",                 0, 0, TEXT,       "Unknown", False), # "Import", "Acquisition", "Library", "Ingest", "Edit", "Playout 1" ....
+("a",  "origin",                 0, 0, TEXT,       "Unknown", False),    # "Import", "Acquisition", "Library", "Ingest", "Edit", "Playout 1" ....
 ("a",  "status",                 0, 0, INTEGER,    0,         False),
 ("a",  "version_of",             0, 0, INTEGER,    0,         False),
 
@@ -27,17 +27,17 @@ BASE_META_SET = [
 
 ("i",  "id_asset",               0, 0, INTEGER,    0,         False),
 ("i",  "id_bin",                 0, 0, INTEGER,    0,         False),
-("i",  "position",               0, 0, INTEGER,    0,         False),
+("i",  "position",               0, 0, INTEGER,    0,         False),    # Order of the item within the bin
 
 
 #
 # Virtual tags 
 #
 
-("v", "rundown_symbol",          0, 0, -1,         0,         False),
-("v", "rundown_status",          0, 0, -1,         0,         False),
-("v", "rundown_broadcast",       0, 0, -1,         0,         False),
-("v", "rundown_scheduled",       0, 0, -1,         0,         False),
+("v", "rundown_symbol",          0, 0, -1,         0,         False),    # Primary symbol in rundown view (folder color for items, star for event promo)
+("v", "rundown_status",          0, 0, -1,         0,         False),    # OFFLINE, READY etc
+("v", "rundown_broadcast",       0, 0, -1,         0,         False),    # Scheduled start time of block/item
+("v", "rundown_scheduled",       0, 0, -1,         0,         False),    # Real computed start time of the item
 
 #
 # Base metadata
@@ -72,8 +72,8 @@ BASE_META_SET = [
 ("m",  "rights",                 1, 1, BLOB,        "",       {"syntax":"off"}),
 ("m",  "version",                1, 1, TEXT,        "",       False),
 
-("m",  "source",                 0, 1, TEXT,        "",       False),
-("m",  "source/url",             0, 1, TEXT,        "",       False),
+("m",  "source",                 0, 1, TEXT,        "",       False),              # Youtube, Vimeo, PirateBay....
+("m",  "source/url",             0, 1, TEXT,        "",       False),              
 
 ("m",  "format",                 1, 1, CS_SELECT,   "",       "formats"),          # documentary / featrure / clip / sport event / ....
 ("m",  "genre",                  1, 1, CS_SELECT,   "",       "genres"),           # horror / football / punk rock
@@ -121,7 +121,7 @@ BASE_META_SET = [
 # Should be reset on media file change
 #
 
-("qc", "qc/state",               1, 0, ENUM,        0,        {0 : "New", 1 : "AQC Rejected", 2 : "AQC Passed", 3 : "QC Rejected", 4 : "QC Passed (Inactive)", 5 : "QC Passed (Active)"}),
+("qc", "qc/state",               1, 0, ENUM,        0,        {0 : "New", 1 : "AQC Rejected", 2 : "AQC Passed", 3 : "Rejected", 4 : "Approved (Inactive)", 5 : "Approved (Active)"}),
 ("qc", "qc/report",              1, 0, BLOB,        "",       False),              # Holds error report from QC Pass and/or rejection/approval message from QC humanoid
 ("qc", "audio/bpm",              0, 0, NUMERIC,     0,        False),              # Music BPM
 ("qc", "audio/r128/i",           0, 0, NUMERIC,     0,        False),              # Integrated loudness (LUFS)
@@ -165,7 +165,7 @@ META_ALIASES = [
 ("identifier/vimeo"     , "en-US", "Vimeo ID",          None),
 ("language"             , "en-US", "Language",          None),
 ("date"                 , "en-US", "Date",              None),
-("genre/music"          , "en-US", "Genre",             None),
+("genre"                , "en-US", "Genre",             None),
 ("role/performer"       , "en-US", "Artist",            None),
 ("description"          , "en-US", "Description",       None),
 ("coverage"             , "en-US", "Coverage",          None),
@@ -178,8 +178,9 @@ META_ALIASES = [
 ("duration"             , "en-US", "Duration",          None),
 ("promoted"             , "en-US", "promoted",          ""),
 ("rundown_symbol"       , "en-US", "Rundown symbol",    ""),
-("rundown_status"       , "en-US", "Status",            ""),
+("rundown_status"       , "en-US", "Status",            None),
 ("rundown_broadcast"    , "en-US", "Broadcast time",    "Broadcast"),
-("rundown_scheduled"    , "en-US", "Scheduled time",    "Scheduled")
+("rundown_scheduled"    , "en-US", "Scheduled time",    "Scheduled"),
+("qc/state"             , "en-US", "State",             None),
 ]
 
