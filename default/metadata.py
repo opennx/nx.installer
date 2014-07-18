@@ -15,7 +15,7 @@ BASE_META_SET = [
 ("a",  "content_type",           0, 0, INTEGER,    0,         False),    # VIDEO / AUDIO /  IMAGE / TEXT 
 ("a",  "id_folder",              1, 0, INTEGER,    0,         False), 
 ("a",  "origin",                 0, 0, TEXT,       "Unknown", False),    # "Import", "Acquisition", "Library", "Ingest", "Edit", "Playout 1" ....
-("a",  "status",                 0, 0, INTEGER,    0,         False),
+("a",  "status",                 0, 0, INTEGER,    0,         False),    # OFFLINE, ONLINE, CREATING, TRASHED, ARCHIVED
 ("a",  "version_of",             0, 0, INTEGER,    0,         False),
 
 ("e",  "start",                  1, 0, DATETIME,   0,         False),
@@ -39,11 +39,13 @@ BASE_META_SET = [
 ("v", "rundown_broadcast",       0, 0, -1,         0,         False),    # Scheduled start time of block/item
 ("v", "rundown_scheduled",       0, 0, -1,         0,         False),    # Real computed start time of the item
 
+("E", "run_mode",                0, 0, INTEGER,    0,         False),    # Real computed start time of the item
+
 #
 # Base metadata
 #
 
-("A",  "id_storage",             1, 0, INTEGER,     0,        False),
+("A",  "id_storage",             0, 0, INTEGER,     0,        False),
 ("A",  "path",                   1, 1, TEXT,        "",       False),
 ("A",  "article",                1, 1, BLOB,        "",       {"syntax" : "md"}),
 ("A",  "subclips",               0, 0, REGIONS,     "[]",     False),
@@ -121,7 +123,7 @@ BASE_META_SET = [
 # Should be reset on media file change
 #
 
-("qc", "qc/state",               1, 0, ENUM,        0,        {0 : "New", 1 : "AQC Rejected", 2 : "AQC Passed", 3 : "Rejected", 4 : "Approved (Inactive)", 5 : "Approved (Active)"}),
+("qc", "qc/state",               1, 0, ENUM,        0,        {0 : "New", 3 : "Rejected", 4 : "Approved (Inactive)", 5 : "Approved (Active)"}),   # 1 and 2 are reserved for Auto QC failed and passed states
 ("qc", "qc/report",              1, 0, BLOB,        "",       False),              # Holds error report from QC Pass and/or rejection/approval message from QC humanoid
 ("qc", "audio/bpm",              0, 0, NUMERIC,     0,        False),              # Music BPM
 ("qc", "audio/r128/i",           0, 0, NUMERIC,     0,        False),              # Integrated loudness (LUFS)
@@ -184,6 +186,7 @@ META_ALIASES = [
 ("rundown_status"       , "en-US", "Status",            None),
 ("rundown_broadcast"    , "en-US", "Broadcast time",    "Broadcast"),
 ("rundown_scheduled"    , "en-US", "Scheduled time",    "Scheduled"),
-("qc/state"             , "en-US", "State",             None),
+("run_mode"             , "en-US", "Run mode",          "Run"),
+("qc/state"             , "en-US", "State",             "QC"),
 ]
 
