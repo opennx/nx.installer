@@ -75,7 +75,8 @@ BASE_META_SET = [
 ("AIEB",  "description",         1, 1, BLOB,        "",       {"syntax" : "md"}),
 ("AIEB",  "promoted",            1, 0, BOOLEAN,     0,        False),              # Asset "promotion". It"s hit, important, favourite,....
 
-
+("AIEB",  "series/season",       1, 0, INTEGER,     0,        False),
+("AIEB",  "series/episode",      1, 0, INTEGER,     0,        False),
 #
 # Asset descriptive metadata
 #
@@ -173,7 +174,7 @@ META_ALIASES = [
 ("mark_in"              , "en-US", "Mark in",           None),
 ("mark_out"             , "en-US", "Mark out",          None),
 ("subclips"             , "en-US", "Subclips",          None),
-("article"              , "en-US", "Text",              None),
+("article"              , "en-US", "Article",           None),
 
 ("title"                , "en-US", "Title",             None),
 ("title/subtitle"       , "en-US", "Subtitle",          None),
@@ -202,8 +203,11 @@ META_ALIASES = [
 ("role/composer"        , "en-US", "Composer",          None),
 
 ("album"                , "en-US", "Album",             None),
+("album/track"          , "en-US", "Track",             None),
+("album/disc"           , "en-US", "Disc",              None),
 ## TODO : Zbytek od alba , contains....
-
+("series/season"        , "en-US", "Season",            None),
+("series/episode"       , "en-US", "Episode",           None),
 
 ### Odsud dal by to melo sedet
 
