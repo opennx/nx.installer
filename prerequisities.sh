@@ -19,12 +19,6 @@ if [ ! -f /opt/nginx/sbin/nginx ]; then
     ./inst.nginx.sh
 fi
 
-if [ ! -f /opt/nginx/sbin/nginx ]; then
-    [ ! -f inst.nginx.sh ] && (wget https://raw.githubusercontent.com/opennx/broadcast-tools/master/inst.nginx.sh || exit 1)
-    chmod +x inst.nginx.sh
-    ./inst.nginx.sh
-fi
-
 
 if [ ! -f /opt/nginx/cert/nginx.pem ]; then
     mkdir /opt/nginx/cert
