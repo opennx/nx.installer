@@ -132,7 +132,12 @@ for id_folder, title, color, meta_set in FOLDERS:
 db.commit()
 
 print "Installing services"
-for agent, title, host, autostart, loop_delay, settings in SERVICES:
+for agent, title, host, autostart, loop_delay in SERVICES:
+    service_settings_fname = os.path.join("template_{}".format(template), "service_settings" , "{}.xml".format(title))
+    if os.path.exists(service_settings_fname):
+        settings = open(service_settings_fname).read()
+    else:
+        settings = "<settings></settings>"
     q = "INSERT INTO nx_services (agent, title, host, autostart, loop_delay, settings, state, pid, last_seen) VALUES ('%s','%s','%s',%d, %d, '%s',0,0,0)" % \
         (agent, title, host, autostart, loop_delay, db.sanit(settings))
     db.query(q)
