@@ -4,17 +4,17 @@
 from nx.constants import *
 
 
-ENUM_MTYPES = {
-    0 : "File",
-    1 : "Virtual"
-}
+ENUM_MTYPES = [
+    [0 , "File"],
+    [1 , "Virtual"],
+]
 
-ENUM_CTYPES = {
-    TEXT: "Text",
-    VIDEO: "Video",
-    AUDIO: "Audio",
-    IMAGE: "Image"
-}
+ENUM_CTYPES = [
+    [TEXT,  "Text"],
+    [VIDEO, "Video"],
+    [AUDIO, "Audio"],
+    [IMAGE, "Image"]
+]
 
 
 BASE_META_SET = [
@@ -25,8 +25,8 @@ BASE_META_SET = [
 ("o",  "ctime",                  0, 0, DATETIME,   0,         False),
 ("o",  "mtime",                  0, 0, DATETIME,   0,         False),
 
-("a",  "media_type",             0, 0, ENUM,       0,         ENUM_MTYPES),        # FILE / VIRTUAL
-("a",  "content_type",           0, 0, ENUM,       0,         ENUM_CTYPES),        # VIDEO / AUDIO /  IMAGE / TEXT 
+("a",  "media_type",             0, 0, SELECT,     0,         ENUM_MTYPES),        # FILE / VIRTUAL
+("a",  "content_type",           0, 0, SELECT,     0,         ENUM_CTYPES),        # VIDEO / AUDIO /  IMAGE / TEXT 
 ("a",  "id_folder",              1, 0, INTEGER,    0,         False),     
 ("a",  "origin",                 0, 0, TEXT,       "Unknown", False),              # "Import", "Acquisition", "Library", "Ingest", "Edit", "Playout 1" ....
 ("a",  "status",                 0, 0, INTEGER,    0,         False),              # OFFLINE, ONLINE, CREATING, TRASHED, ARCHIVED
@@ -205,7 +205,7 @@ META_ALIASES = [
 ("album"                , "en-US", "Album",             None),
 ("album/track"          , "en-US", "Track",             None),
 ("album/disc"           , "en-US", "Disc",              None),
-## TODO : Zbytek od alba , contains....
+
 ("series/season"        , "en-US", "Season",            None),
 ("series/episode"       , "en-US", "Episode",           None),
 
