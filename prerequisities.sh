@@ -1,13 +1,12 @@
 #!/bin/bash
 
-apt-get -y install python-psycopg2 python-pylibmc python-cairo python-pip
-pip install flask flask-login
-
+apt-get -y install python-psycopg2 python-pylibmc python-cairo libayaml-dev python-pip
+pip install flask flask-login pyyaml
 
 [ ! -d src/ ] && mkdir src/
 cd src/
 
-if hash ffmpeg 2>/dev/null; then
+if [ ! -f /usr/local/bin/ffmpeg ]; then
     [ ! -f inst.ffmpeg.sh ] && (wget https://raw.githubusercontent.com/opennx/broadcast-tools/master/inst.ffmpeg.sh || exit 1)
     chmod +x inst.ffmpeg.sh
     ./inst.ffmpeg.sh
