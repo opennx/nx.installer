@@ -77,6 +77,11 @@ if template and os.path.exists("template_{}".format(template)):
     except ImportError:
         print ("Using default settings for views")
 
+    try:
+        CS = __import__('template_{}.cs'.format(template), globals(), locals(), ['CS'], -1).CS
+    except ImportError:
+        CS = {}
+        print ("Using default settings for views")
 
 
 db = DB()
@@ -116,7 +121,7 @@ db.commit()
 
 
 
-db.query("TRUNCATE TABLE nx_settings, nx_folders, nx_services, nx_storages, nx_actions, nx_channels, nx_views RESTART IDENTITY")
+db.query("TRUNCATE TABLE nx_settings, nx_folders, nx_services, nx_storages, nx_actions, nx_channels, nx_views, nx_cs RESTART IDENTITY")
 db.commit()
 
 print "Installing site settings"
@@ -164,6 +169,11 @@ db.commit()
 
 print "Installing views"
 for title, config in VIEWS:
-    q = "INSERT INTO nx_views (owner, title, config) VALUES (0, '%s', '%s')" % (title, db.sanit(config))
-    db.query(q)
+    db.query("INSERT INTO nx_views (owner, title, config) VALUES (0, %s, %s)", [title, config])
+db.commit()
+
+print "Installing CS"
+for cs in CS:
+    for v, t in CS[cs]:
+        db.query("INSERT INTO nx_cs (cs, value, label) VALUES (%s, %s, %s)", [cs, v, t]) 
 db.commit()
