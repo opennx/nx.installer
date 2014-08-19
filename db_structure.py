@@ -8,7 +8,7 @@ DB_STRUCTURE = [
 """CREATE TABLE "public"."nx_cs" ( 
     "cs" varchar(50) NOT NULL, 
     "value" varchar(255) NOT NULL, 
-    "label" varchar(255) NOT NULL, 
+    "label" varchar(255), 
     CONSTRAINT "nx_cs_pkey" PRIMARY KEY ("cs", "value")
 );""",
 
