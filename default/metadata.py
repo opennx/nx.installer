@@ -73,6 +73,7 @@ BASE_META_SET = [
 ("AIEB",  "title/series",        1, 1, CS_SELECT,   "",       "series"),           # dc.title.series - Where the resource is part of a series (CBA Research Reports, Star Trek, or whatever), the series name may be given here."
 ("AIEB",  "title/original",      1, 1, TEXT,        "",       False),              # ebucore.title.original
 ("AIEB",  "description",         1, 1, BLOB,        "",       {"syntax" : "md"}),
+("AIEB",  "description/original",1, 1, BLOB,        "",       {"syntax" : "md"}),
 ("AIEB",  "promoted",            1, 0, BOOLEAN,     0,        False),              # Asset "promotion". It"s hit, important, favourite,....
 
 ("AIEB",  "series/season",       1, 0, INTEGER,     0,        False),
@@ -182,6 +183,7 @@ META_ALIASES = [
 ("title/series"         , "en-US", "Series",            None),
 ("title/original"       , "en-US", "Orig. title",       None),
 ("description"          , "en-US", "Description",       None),
+("description/original" , "en-US", "Orig. description", None),
 ("promoted"             , "en-US", "promoted",          ""),
 
 
