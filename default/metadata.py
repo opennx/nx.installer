@@ -43,6 +43,9 @@ BASE_META_SET = [
 ("i",  "id_bin",                 0, 0, INTEGER,    0,         False),
 ("i",  "position",               0, 0, INTEGER,    0,         False),              # Order of the item within the bin
 
+("u",  "login",                  0, 0, TEXT,       0,         False),              # Order of the item within the bin
+("u",  "password",               0, 0, TEXT,       0,         False),              # Order of the item within the bin
+
 
 #
 # Virtual tags 

@@ -119,6 +119,7 @@ DB_STRUCTURE = [
     "title" varchar(50) NOT NULL, 
     "color" integer NOT NULL, 
     "meta_set" text NOT NULL DEFAULT '[]',
+    "create_script" text NULL,
     CONSTRAINT "nx_folders_pkey" PRIMARY KEY ("id_folder")
 )""",
 
