@@ -7,5 +7,9 @@ SITE_SETTINGS = [
     ("cache_host"     , "localhost"),
     ("cache_port"     , "11211"),
     ("plugin_storage" , "1"),
-    ("plugin_root"    , ".nx/plugins")
+    ("proxy_storage"  , "1"),
+    ("thumb_storage"  , "1"),
+    ("plugin_root"    , ".nx/plugins"),
+    ("proxy_root"     , ".nx/proxy"),
+    ("thumb_root"     , ".nx/thumb")
 ]
