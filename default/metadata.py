@@ -43,8 +43,14 @@ BASE_META_SET = [
 ("i",  "id_bin",                 0, 0, INTEGER,    0,         False),
 ("i",  "position",               0, 0, INTEGER,    0,         False),              # Order of the item within the bin
 
-("u",  "login",                  0, 0, TEXT,       0,         False),              # Order of the item within the bin
-("u",  "password",               0, 0, TEXT,       0,         False),              # Order of the item within the bin
+
+
+
+("u",  "login",                  0, 0, TEXT,       0,         False),
+("u",  "password",               0, 0, TEXT,       0,         False),
+
+("U",  "full_name",              0, 0, TEXT,       0,         False),              
+
 
 
 #
@@ -55,6 +61,7 @@ BASE_META_SET = [
 ("v", "rundown_status",          0, 0, -1,         0,         False),              # OFFLINE, READY etc
 ("v", "rundown_broadcast",       0, 0, -1,         0,         False),              # Scheduled start time of block/item
 ("v", "rundown_scheduled",       0, 0, -1,         0,         False),              # Real computed start time of the item
+("v", "rundown_difference",      0, 0, -1,         0,         False),              # Real computed start time of the item
 ("E", "run_mode",                0, 0, INTEGER,    0,         False),              # AUTO / MANUAL / SOFT AUTO / HARD AUTO
 
 #
@@ -86,10 +93,14 @@ BASE_META_SET = [
 #
 
 ("m",  "language",               1, 0, CS_SELECT,   "en-US",  "languages"),
-("m",  "date",                   1, 0, DATETIME,    0,        False),
+("m",  "date",                   1, 0, DATETIME,    0,        {"mode":"date"}),
+("m",  "date/valid",             1, 0, DATETIME,    0,        {"mode":"date"}),
 ("m",  "subject",                1, 1, BLOB,        "",       False),              # Keywords
 ("m",  "rights",                 1, 1, BLOB,        "",       False),
 ("m",  "version",                1, 1, TEXT,        "",       False),
+("m",  "notes",                  1, 1, BLOB,        "",       False),
+
+
 
 ("m",  "source",                 0, 1, TEXT,        "",       False),              # Youtube, Vimeo, PirateBay....
 ("m",  "source/url",             0, 1, TEXT,        "",       False),              # youtube url, torrent magnet link....
@@ -192,9 +203,11 @@ META_ALIASES = [
 
 ("language"             , "en-US", "Language",          None),
 ("date"                 , "en-US", "Date",              None),
+("date/valid"           , "en-US", "Valid until",       None),
 ("subject"              , "en-US", "Keywords",          None),
 ("rights"               , "en-US", "Rights",            None),
 ("version"              , "en-US", "Version",           None),
+("notes"                , "en-US", "Notes",             None),
 
 ("format"               , "en-US", "Format",            None),
 ("genre"                , "en-US", "Genre",             None),
@@ -220,6 +233,7 @@ META_ALIASES = [
 ("rundown_status"       , "en-US", "Status",                                 None),
 ("rundown_broadcast"    , "en-US", "Broadcast time",                         "Broadcast"),
 ("rundown_scheduled"    , "en-US", "Scheduled time",                         "Scheduled"),
+("rundown_difference"   , "en-US", "Difference",                             "Difference"),
 ("run_mode"             , "en-US", "Run mode",                               "Run"),
 
 ("file/format"          , "en-US", "File format",                            None),
