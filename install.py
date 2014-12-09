@@ -76,6 +76,10 @@ if template and os.path.exists("template_{}".format(template)):
         VIEWS = __import__('template_{}.views'.format(template), globals(), locals(), ['VIEWS'], -1).VIEWS
     except ImportError:
         print ("Using default settings for views")
+    try:
+        VIEWS = __import__('template_{}.users'.format(template), globals(), locals(), ['USERS'], -1).USERS
+    except ImportError:
+        print ("Using default settings for users")
 
     try:
         CS = __import__('template_{}.cs'.format(template), globals(), locals(), ['CS'], -1).CS
@@ -132,8 +136,13 @@ db.commit()
 
 print "Installing folders"
 for id_folder, title, color, meta_set in FOLDERS:
-    q = "INSERT INTO nx_folders (id_folder, title, color, meta_set) VALUES (%d,'%s',%d, '%s')" % (id_folder, title, color, json.dumps(meta_set))
-    db.query(q)
+    validator_fname = os.path.join("template_{}".format(template), "validators" , "{}.py".format(id_folder))
+    if os.path.exists(validator_fname):
+        validator = open(validator_fname).read()
+    else:
+        validator = None
+
+    db.query("INSERT INTO nx_folders (id_folder, title, color, meta_set, create_script) VALUES (%s,%s,%s, %s, %s)", (id_folder, title, color, json.dumps(meta_set), validator))
 db.commit()
 
 print "Installing services"
