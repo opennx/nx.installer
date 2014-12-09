@@ -77,7 +77,7 @@ if template and os.path.exists("template_{}".format(template)):
     except ImportError:
         print ("Using default settings for views")
     try:
-        VIEWS = __import__('template_{}.users'.format(template), globals(), locals(), ['USERS'], -1).USERS
+        USERS = __import__('template_{}.users'.format(template), globals(), locals(), ['USERS'], -1).USERS
     except ImportError:
         print ("Using default settings for users")
 
