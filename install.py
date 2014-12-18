@@ -142,7 +142,7 @@ for id_folder, title, color, meta_set in FOLDERS:
     else:
         validator = None
 
-    db.query("INSERT INTO nx_folders (id_folder, title, color, meta_set, create_script) VALUES (%s,%s,%s, %s, %s)", (id_folder, title, color, json.dumps(meta_set), validator))
+    db.query("INSERT INTO nx_folders (id_folder, title, color, meta_set, validator) VALUES (%s,%s,%s, %s, %s)", (id_folder, title, color, json.dumps(meta_set), validator))
 db.commit()
 
 print "Installing services"
