@@ -99,7 +99,7 @@ BASE_META_SET = [
 ("m",  "rights",                 1, 1, BLOB,        "",       False),
 ("m",  "version",                1, 1, TEXT,        "",       False),
 ("m",  "notes",                  1, 1, BLOB,        "",       False),
-
+("m",  "runs",                   0, 0, INTEGER,     0,        False),
 
 
 ("m",  "source",                 0, 1, TEXT,        "",       False),              # Youtube, Vimeo, PirateBay....
@@ -208,6 +208,7 @@ META_ALIASES = [
 ("rights"               , "en-US", "Rights",            None),
 ("version"              , "en-US", "Version",           None),
 ("notes"                , "en-US", "Notes",             None),
+("runs"                 , "en-US", "Runs",              None),
 
 ("format"               , "en-US", "Format",            None),
 ("genre"                , "en-US", "Genre",             None),
