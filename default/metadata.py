@@ -71,7 +71,7 @@ BASE_META_SET = [
 ("A",  "id_storage",             0, 0, INTEGER,     0,        False),
 ("A",  "path",                   1, 1, TEXT,        "",       False),
 ("A",  "article",                1, 1, BLOB,        "",       {"syntax" : "md"}),
-("A",  "subclips",               0, 0, REGIONS,     "[]",     False),
+("A",  "subclips",               0, 0, REGIONS,     "{}",     False),
 ("A",  "meta_probed",            0, 0, BOOLEAN,     0,        False),              # If true, meta_probes would not overwrite non-technical metadata during update
 
 ("AI", "mark_in",                1, 0, TIMECODE,    0,        False),
@@ -125,6 +125,8 @@ BASE_META_SET = [
 ("m",  "contains/cg_text",       1, 0, BOOLEAN,     0,        False),              # TODO: Create ENUMS for contains/* (full frontal etc.)
 ("m",  "contains/nudity",        1, 0, BOOLEAN,     0,        False),
 ("m",  "contains/violence",      1, 0, BOOLEAN,     0,        False),
+
+("m",  "commercials/client",     1, 1, CS_SELECT,   0,        "clients"),
 
 #
 # "FMT" name space:
@@ -227,6 +229,9 @@ META_ALIASES = [
 
 ("series/season"        , "en-US", "Season",            None),
 ("series/episode"       , "en-US", "Episode",           None),
+
+("commercials/client"   , "en-US", "Client",            None),
+
 
 ### Odsud dal by to melo sedet
 
