@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt-get -y install python-psycopg2 python-pylibmc python-cairo libayaml-dev python-pip
+apt-get -y install python-psycopg2 python-pylibmc python-cairo python-gtk2 libyaml-dev python-pip
 pip install flask flask-login pyyaml
 
 [ ! -d src/ ] && mkdir src/
