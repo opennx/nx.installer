@@ -75,7 +75,7 @@ FOLDERS = [
         ("qc/state",        False),
     ]),
 
-(8 , "Templates"     , 0xC7037F, 
+(8 , "Graphics"     , 0xC7037F, 
     [
         ("title",           True)
     ]),
@@ -106,7 +106,16 @@ FOLDERS = [
         ("qc/state",        False),
         ("identifier/main", True),
         ("commercials/client", True),
-    ])
+    ]),
+    
+(13, "Shot"  , 0xFF1616, 
+    [
+        ("title",           True),
+        ("qc/state",        False),
+        ("identifier/main", True),
+    ])    
+
+    
 ]
 
 
