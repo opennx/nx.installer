@@ -52,6 +52,13 @@ if [ $install_ffmpeg ]; then
         ./inst.ffmpeg.sh
     fi
 
+    echo "Installing bpm-tools..."
+    git clone https://github.com/martastain/bpm-tools
+    cd bpm-tools
+    make && make install
+    cd ..
+
+
 fi
 
 #
