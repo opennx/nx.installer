@@ -9,7 +9,7 @@ fi
 # Install base prerequisities
 #
 
-apt-get -y install git build-essential
+apt-get -y install git build-essential cifs-utils
 apt-get -y install python-psycopg2 libyaml-dev python-pip python-dev
 apt-get -y install python-cairo python-gtk2 python-imaging
 
@@ -24,10 +24,10 @@ ffmpeg=0
 
 while getopts "nf" opt; do
     case "$opt" in
-    n)  
+    n)
         install_nginx=1
         ;;
-    f)  
+    f)
         install_ffmpeg=1
         ;;
     esac
