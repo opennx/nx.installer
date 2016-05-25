@@ -1,34 +1,84 @@
 #!/bin/bash
+#
+# Copyright (c) 2016 imm studios, z.s.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+##############################################################################
+## COMMON UTILS
+
+BASEDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+TEMPDIR=/tmp/$(basename "${BASH_SOURCE[0]}")
+
+function error_exit {
+    printf "\n\033[0;31mInstallation failed\033[0m\n"
+    cd $BASEDIR
+    exit 1
+}
+
+function finished {
+    printf "\n\033[0;92mInstallation completed\033[0m\n"
+    cd $BASEDIR
+    exit 0
+}
+
 
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root" 1>&2
-   exit 1
+   error_exit
 fi
 
+if [ ! -d $TEMPDIR ]; then
+    mkdir $TEMPDIR || error_exit
+fi
+
+## COMMON UTILS
+##############################################################################
+
+function install_base {
+    apt-get -y install git build-essential cifs-utils || return 1
+    apt-get -y install python-psycopg2 python-pylibmc libyaml-dev python-pip python-dev || return 1
+    apt-get -y install python-cairo python-gtk2 python-imaging || return 1
+    pip install flask flask-login pyyaml || return 1
+}
+
+
+function install_ffmpeg {
+    wget -q https://raw.githubusercontent.com/immstudios/installers/master/install.ffmpeg.sh -O ${BASEDIR}/install.ffmpeg.sh || return 1
+    chmod +x install.ffmpeg.sh
+    ./install.ffmpeg.sh || (rm install.ffmpeg.sh && return 1)
+    rm install.ffmpeg.sh
+}
+
+
+function install_nginx {
+    # install manually?
+}
+
+
+
 #
-# Install base prerequisities
+# Install it
 #
 
-apt-get -y install git build-essential cifs-utils
-apt-get -y install python-psycopg2 libyaml-dev python-pip python-dev
-apt-get -y install python-cairo python-gtk2 python-imaging
 
-pip install flask flask-login pyyaml
-
-#
-# Parse command line options
-#
-
-nginx=0
-ffmpeg=0
+install_base || error_exit
 
 while getopts "nf" opt; do
     case "$opt" in
     n)
-        install_nginx=1
+        install_nginx
         ;;
     f)
-        install_ffmpeg=1
+        install_ffmpeg
         ;;
     esac
 done
@@ -36,48 +86,5 @@ done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
-
-[ ! -d src/ ] && mkdir src/
-cd src/
-
-#
-# FFMPEG
-#
-
-if [ $install_ffmpeg ]; then
-    echo "Installing ffmpeg..."
-    if [ ! -f /usr/local/bin/ffmpeg ]; then
-        [ ! -f inst.ffmpeg.sh ] && (wget https://raw.githubusercontent.com/opennx/broadcast-tools/master/inst.ffmpeg.sh || exit 1)
-        chmod +x inst.ffmpeg.sh
-        ./inst.ffmpeg.sh
-    fi
-
-    echo "Installing bpm-tools..."
-    git clone https://github.com/martastain/bpm-tools
-    cd bpm-tools
-    make && make install
-    cd ..
-
-
-fi
-
-#
-# NGINX
-#
-
-if [ $install_nginx ]; then
-    echo "Installing nginx..."
-    if [ ! -f /opt/nginx/sbin/nginx ]; then
-        [ ! -f inst.nginx.sh ] && (wget https://raw.githubusercontent.com/opennx/broadcast-tools/master/inst.nginx.sh || exit 1)
-        chmod +x inst.nginx.sh
-        ./inst.nginx.sh
-    fi
-
-    echo "Creating SSL key..."
-    if [ ! -f /opt/nginx/cert/nginx.pem ]; then
-        mkdir /opt/nginx/cert
-        openssl req -new -x509 -days 365 -nodes -out /opt/nginx/cert/nginx.pem -keyout /opt/nginx/cert/nginx.key
-    fi
-
-fi
+finished
 
