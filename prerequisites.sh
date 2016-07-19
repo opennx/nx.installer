@@ -15,18 +15,18 @@
 ##############################################################################
 ## COMMON UTILS
 
-BASEDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-TEMPDIR=/tmp/$(basename "${BASH_SOURCE[0]}")
+BASE_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+TEMP_DIR=/tmp/$(basename "${BASH_SOURCE[0]}")
 
-function error_exit {
+function critical_error {
     printf "\n\033[0;31mInstallation failed\033[0m\n"
-    cd $BASEDIR
+    cd ${BASE_DIR}
     exit 1
 }
 
 function finished {
     printf "\n\033[0;92mInstallation completed\033[0m\n"
-    cd $BASEDIR
+    cd ${BASE_DIR}
     exit 0
 }
 
@@ -36,8 +36,8 @@ if [ "$(id -u)" != "0" ]; then
    error_exit
 fi
 
-if [ ! -d $TEMPDIR ]; then
-    mkdir $TEMPDIR || error_exit
+if [ ! -d $TEMP_DIR ]; then
+    mkdir $TEMP_DIR || error_exit
 fi
 
 ## COMMON UTILS
@@ -60,6 +60,7 @@ function install_ffmpeg {
 
 
 function install_nginx {
+    critical_error
     # install manually?
 }
 
