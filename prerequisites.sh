@@ -48,6 +48,7 @@ function install_base {
     apt-get -y install python-psycopg2 python-pylibmc libyaml-dev python-pip python-dev || return 1
     apt-get -y install python-cairo python-gtk2 python-imaging || return 1
     pip install flask flask-login pyyaml || return 1
+    pip install cherrypy jinja2 || return 1
 }
 
 
@@ -64,12 +65,9 @@ function install_nginx {
     # install manually?
 }
 
-
-
 #
 # Install it
 #
-
 
 install_base || error_exit
 
